@@ -33,3 +33,39 @@ function renderUserView() {
         container.appendChild(card);
     });
 }
+
+function switchView(viewName) {
+    document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+    document.getElementById(`${viewName}-view`).classList.add('active');
+    currentViewMode = viewName;
+    
+    // GỌI HÀM RENDER CỦA TV3 VÀ TV5
+    if (viewName === 'user') renderUserView(); // Gọi hàm của TV3
+    if (viewName === 'cart') renderCartView(); // Gọi hàm của TV5 (nếu đã thêm)
+}
+
+// Logic hiển thị chi tiết sản phẩm (FR2.3)
+function showDetail(product) {
+    currentProductDetail = product; 
+    
+    document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+    document.getElementById('detail-view').classList.add('active');
+    window.scrollTo(0, 0); 
+
+    // Các dòng hiển thị chi tiết... (sử dụng formatMoney từ TV2)
+    document.getElementById('detailImage').src = product.image;
+    document.getElementById('detailName').innerText = product.name;
+    document.getElementById('detailBrand').innerText = `Thương hiệu: ${product.brand}`;
+    document.getElementById('detailPrice').innerText = formatMoney(product.price);
+    // ...
+}
+
+// Logic Quay lại (Sử dụng cho detail-view)
+function goBack() {
+    // Quay lại view 'user' (hoặc 'cart' nếu có logic)
+    switchView('user'); 
+}
+
+// KHỞI TẠO ỨNG DỤNG (Đảm bảo chạy đầu tiên khi tải script.js)
+// Lệnh này sẽ gọi switchView, và switchView sẽ gọi renderUserView (TV3)
+switchView('user');
